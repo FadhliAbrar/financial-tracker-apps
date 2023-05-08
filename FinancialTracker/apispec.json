@@ -1,0 +1,894 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "title":"Financial Tracker API",
+      "version":"1.0"
+    },
+    "servers": [
+      {"url":"https://api.server.test/v1"}
+    ],
+    "components": {
+        "securitySchemes": {
+            "name": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "paths": {
+        "/transactions": {
+            "get":{
+              "security": [{
+                "CategoryAuth": []
+              }],
+              "description": "List all transactions",
+              "tags": ["Transaction API"],
+              "summary": "List all transactions",
+              "responses": {
+                "200": {
+                  "description": "Success get all transactions",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "array",
+                            "items":{
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "number"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "amount":{
+                                  "type": "number"
+                                },
+                                "category_id":{
+                                  "type": "number"
+                                },
+                                "date": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "post": {
+                "description": "Create or adding transaction",
+                "summary": "Create new transaction",
+                "tags": ["Transaction API"],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "amount": {
+                                        "type": "number"
+                                    },
+                                    "description":{
+                                        "type": "string"
+                                    },
+                                    "category_id": {
+                                        "type": "number"
+                                    },
+                                    "date":{
+                                        "type": "string"
+                                    }
+                                }
+                            }   
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                              "schema": {
+                                "type": "object",
+                                "properties": {
+                                  "code": {
+                                    "type": "number"
+                                  },
+                                  "status": {
+                                    "type": "string"
+                                  },
+                                  "data": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "number"
+                                      },
+                                      "type": {
+                                        "type": "string"
+                                      },
+                                      "amount":{
+                                        "type": "number"
+                                      },
+                                      "category_id":{
+                                        "type": "number"
+                                      },
+                                      "date": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transactions/:transaction_id": {
+            "put": {
+                "description": "UPDATE transaction by id",
+                "tags": ["Transaction API"],
+                "parameters": [
+                  {
+                    "name": "transaction_id",
+                    "in": "path",
+                    "description": "Transaction Id"
+                  }
+                ],
+                "requestBody":{
+                  "content": {
+                    "application/json":{
+                      "schema":{
+                        "type": "object",
+                        "properties": {
+                          "type":{
+                            "type": "string"
+                          },
+                          "amount":{
+                            "type": "number"
+                          },
+                          "description":{
+                            "type":"string"
+                          },
+                          "category_id":{
+                            "type": "number"
+                          },
+                          "date":{
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "code": {
+                                  "type": "number"
+                                },
+                                "status": {
+                                  "type": "string"
+                                },
+                                "data": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "number"
+                                    },
+                                    "type": {
+                                      "type": "string"
+                                    },
+                                    "amount":{
+                                      "type": "number"
+                                    },
+                                    "description":{
+                                      "type": "string"
+                                    },
+                                    "category_id":{
+                                      "type": "number"
+                                    },
+                                    "date": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                      }
+                        
+                    }
+                }
+            },
+            "delete": {
+              "tags": ["Transaction API"],
+              "description": "DELETE transaction by id",
+              "summary": "DELETE transaction by id",
+              "parameters": [
+                  {
+                    "name": "transaction_id",
+                    "in": "path",
+                    "description": "Transaction id"
+                  }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Success delete transaction",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        },
+        "/categories": {
+          "get": {
+            "security": [{
+              "CategoryAuth": []
+            }],
+            "description": "List all Categories",
+            "tags": ["Category API"],
+            "summary": "List all Categories",
+            "responses": {
+              "200": {
+                "description": "Success get all categories",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type":"object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "type":{
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "post": {
+            "security": [{
+              "CategoryAuth": []
+            }],
+            "description": "Create new Categories",
+            "summary": "Create new Categories",
+            "tags": ["Category API"],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "type":{
+                          "type": "string"
+                        }
+                      }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success Create Category",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "type":{
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/categories/{categoryId}": {
+          "get": {
+            "security": [{
+              "CategoryAuth": []
+            }],
+            "tags": ["Category API"],
+            "description": "GET Category by Id",
+            "summary": "GET Category by Id",
+            "parameters": [
+              {
+                "name": "categoryId",
+                "in": "path",
+                "description": "Category Id"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success get category",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type":"object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "type":{
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "put": {
+            "security": [{
+              "CategoryAuth": []
+            }],
+            "tags": ["Category API"],
+            "description": "Update Category by Id",
+            "summary": "Update Category by Id",
+            "parameters": [
+              {
+                "name": "categoryId",
+                "in": "path",
+                "description": "category id"
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "type":{
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+            },
+            "responses": {
+              "200": {
+                "description": "Success updating category",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type":"object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "type":{
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "delete": {
+            "security": [{
+              "CategoryAuth": []
+            }],
+            "tags": ["Category API"],
+            "description": "DELETE Category by Id",
+            "summary": "DELETE Category by Id",
+            "parameters": [
+              {
+                "name": "categoryId",
+                "in": "path",
+                "description": "Category Id"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success delete category",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/login": {
+          "post": {
+            "description": "User login",
+            "summary": "User login",
+            "tags": ["Users API"],
+            "requestBody":{
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "type":"object",
+                    "properties": {
+                      "email":{
+                        "type":"string"
+                      },
+                      "password":{
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "data":{
+                          "type": "object",
+                          "properties": {
+                            "email":{
+                              "type": "string"
+                            },
+                            "username":{
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/register": {
+          "post": {
+            "description": "User register",
+            "summary": "Create new user",
+            "tags": ["Users API"],
+            "requestBody":{
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "type": "object",
+                    "properties": {
+                      "username":{
+                        "type": "string"
+                      },
+                      "email":{
+                        "type": "string"
+                      },
+                      "password":{
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "type": "object",
+                      "properties": {
+                        "code":{
+                          "type": "number"
+                        },
+                        "status":{
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/users/:user_id": {
+          "get": {
+            "description": "",
+            "tags": ["Users API"],
+            "parameters": [
+              {
+                "name": "user_id",
+                "in": "path"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "type": "object",
+                      "properties": {
+                        "code":{
+                          "type": "number"
+                        },
+                        "status":{
+                          "type": "string"
+                        },
+                        "data":{
+                          "type": "object",
+                          "properties": {
+                            "id":{
+                              "type": "number"
+                            },
+                            "username":{
+                              "type": "string"
+                            },
+                            "email":{
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "put":{
+            "security": [{
+              "CategoryAuth": []
+            }],
+            "tags": ["Users API"],
+            "description": "Update user by id",
+            "summary": "Update user by id",
+            "parameters": [
+              {
+                "name": "user_id",
+                "in": "path"
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "type":{
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+            },
+            "responses": {
+              "200":{
+                "description": "Update user responses",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "type": "object",
+                      "properties": {
+                        "code":{
+                          "type": "number"
+                        },
+                        "status":{
+                          "type": "string"
+                        },
+                        "data":{
+                          "type":"object",
+                          "properties": {
+                            "id":{
+                              "type": "number"
+                            },
+                            "name":{
+                              "type": "string"
+                            },
+                            "email":{
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "delete": {
+            "tags": ["Users API"],
+            "description": "DELETE user by id",
+            "summary": "DELETE user by id",
+            "parameters": [
+                {
+                  "name": "user_id",
+                  "in": "path",
+                  "description": "Delete user by id"
+                }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success delete transaction",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/finance-statistics": {
+          "get": {
+            "description": "",
+            "tags": ["Finance statistics data API"],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "type": "object",
+                      "properties": {
+                        "code":{
+                          "type": "number"
+                        },
+                        "status":{
+                          "type": "string"
+                        },
+                        "data":{
+                          "type": "object",
+                          "properties": {
+                            "total_income":{
+                              "type": "number"
+                            },
+                            "total_expense":{
+                              "type": "number"
+                            },
+                            "balance":{
+                              "type": "number"
+                            },
+                            "income_by_category":{
+                              "type": "array",
+                              "items":{
+                                "type": "object",
+                                "properties": {
+                                  "category_id":{
+                                    "type": "number"
+                                  },
+                                  "category_name":{
+                                    "type": "string"
+                                  },
+                                  "total_income":{
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            },
+                            "expense_by_category":{
+                              "type": "array",
+                              "items":{
+                                "type": "object",
+                                "properties": {
+                                  "category_id":{
+                                    "type": "number"
+                                  },
+                                  "category_name":{
+                                    "type": "string"
+                                  },
+                                  "total_expense":{
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/transactions?start_date=<tanggal_awal>&end_date=<tanggal_akhir>": {
+          "get": {
+            "description": "Endpoint API untuk mendapatkan daftar transaksi keuangan berdasarkan tanggal",
+            "parameters": [
+              {
+                "name": "<tanggal_awal>",
+                "in": "query"
+              },
+              {
+                "name": "<tanggal_awal>",
+                "in": "query"
+              }
+            ],
+            "tags": ["Transaction by date API"],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "type": "array",
+                      "items":{
+                        "type": "object",
+                        "properties": {
+                          "id":{
+                            "type": "number"
+                          },
+                          "type":{
+                            "type": "string"
+                          },
+                          "amount":{
+                            "type": "number"
+                          },
+                          "description":{
+                            "type": "string"
+                          },
+                          "category_id":{
+                            "type": "number"
+                          },
+                          "date":{
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    }
+}
